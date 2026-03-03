@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cricketlivescore.aurnai.pro/sitemap.xml

@@ -1,0 +1,7 @@
+name = "cricket-live-score"
+compatibility_date = "2026-03-03"
+
+[[kv_namespaces]]
+binding = "SCORE_KV"
+id = "YOUR_KV_NAMESPACE_ID"
+preview_id = "YOUR_KV_PREVIEW_ID"

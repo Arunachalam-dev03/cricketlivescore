@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cricket Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="admin">
+  <div class="app-bg"></div>
+  <main class="container admin-container">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Admin Control Room</p>
+        <h1>Cricket Live Management</h1>
+        <p class="muted">Create matches, manage live scoring, fixtures, and tournament settings.</p>
+      </div>
+      <div class="hero-controls">
+        <span class="chip">Protected API</span>
+      </div>
+    </header>
+
+    <section id="loginCard" class="card narrow">
+      <h2>Admin Login</h2>
+      <div class="form-grid single">
+        <div>
+          <label>Password</label>
+          <input id="adminPassword" type="password" placeholder="Enter admin password" />
+        </div>
+      </div>
+      <button class="btn btn-primary" id="loginBtn">Login</button>
+      <p id="loginMsg" class="muted"></p>
+    </section>
+
+    <section id="adminPanel" class="hidden">
+      <section class="card">
+        <h2>Tournament Settings</h2>
+        <div class="form-grid">
+          <div>
+            <label>Tournament Name</label>
+            <input id="tournamentNameInput" type="text" placeholder="IPL 2026" />
+          </div>
+          <div>
+            <label>Default Overs</label>
+            <input id="defaultOversInput" type="number" min="1" value="20" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Create / Select Match</h2>
+        <div class="form-grid">
+          <div><label>Team A</label><input id="newTeamA" type="text" placeholder="India" /></div>
+          <div><label>Team B</label><input id="newTeamB" type="text" placeholder="Australia" /></div>
+          <div><label>Total Overs</label><input id="newMaxOvers" type="number" min="1" value="20" /></div>
+          <div><label>Toss Winner</label><input id="newTossWinner" type="text" placeholder="India" /></div>
+          <div><label>Striker</label><input id="newBatsman" type="text" placeholder="Rohit" /></div>
+          <div><label>Bowler</label><input id="newBowler" type="text" placeholder="Starc" /></div>
+        </div>
+        <div class="btn-row wrap">
+          <button id="createMatchBtn" class="btn btn-primary">Create New Match</button>
+          <label class="label">Active Match</label>
+          <select id="adminMatchSelector"></select>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Fixture Management</h2>
+        <div class="form-grid">
+          <div><label>Fixture Team A</label><input id="fixtureTeamA" type="text" placeholder="Mumbai" /></div>
+          <div><label>Fixture Team B</label><input id="fixtureTeamB" type="text" placeholder="Chennai" /></div>
+          <div><label>Date & Time</label><input id="fixtureDate" type="datetime-local" /></div>
+          <div><label>Venue</label><input id="fixtureVenue" type="text" placeholder="Wankhede" /></div>
+        </div>
+        <div class="btn-row wrap">
+          <button id="addFixtureBtn" class="btn">Add Fixture</button>
+        </div>
+        <div id="adminFixtureList" class="history-list"></div>
+      </section>
+
+      <section class="card">
+        <h2>Match Controls</h2>
+        <div class="form-grid">
+          <div><label>Target</label><input id="targetInput" type="number" min="0" value="0" /></div>
+          <div><label>Current Batsman</label><input id="batsmanInput" type="text" /></div>
+          <div><label>Current Bowler</label><input id="bowlerInput" type="text" /></div>
+          <div><label>Status</label><input id="statusInput" type="text" /></div>
+          <div><label>Batting Team</label><input id="battingTeamInput" type="text" /></div>
+          <div><label>Bowling Team</label><input id="bowlingTeamInput" type="text" /></div>
+        </div>
+        <div class="btn-row wrap">
+          <button class="btn" data-action="start">Start Match</button>
+          <button class="btn" data-action="end">End Match</button>
+          <button class="btn btn-danger" data-action="reset">Reset Match</button>
+          <button class="btn" data-action="switch-innings">Start 2nd Innings</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Score Update</h2>
+        <div class="score-quick" id="adminQuickScore">0/0 (0.0)</div>
+        <div class="btn-grid">
+          <button class="btn btn-score" data-ball="1">+1</button>
+          <button class="btn btn-score" data-ball="2">+2</button>
+          <button class="btn btn-score" data-ball="3">+3</button>
+          <button class="btn btn-score" data-ball="4">+4</button>
+          <button class="btn btn-score" data-ball="6">+6</button>
+          <button class="btn btn-danger" data-ball="W">Wicket</button>
+          <button class="btn" data-ball="WD">Wide</button>
+          <button class="btn" data-ball="NB">No Ball</button>
+          <button class="btn" data-ball="DOT">Dot</button>
+          <button class="btn" data-ball="UNDO">Undo Last Ball</button>
+        </div>
+        <div class="btn-row wrap">
+          <button id="saveBtn" class="btn btn-primary">Save Changes</button>
+          <button id="shareBtn" class="btn">Share Match Link</button>
+          <button id="pdfBtn" class="btn">Export Scorecard PDF</button>
+        </div>
+        <p id="saveMsg" class="muted"></p>
+      </section>
+
+      <section class="card">
+        <h2>Share QR</h2>
+        <div id="qrWrap" class="qr-wrap"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
